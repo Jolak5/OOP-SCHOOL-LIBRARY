@@ -1,9 +1,9 @@
-require_relative 'nameable'
-require_relative 'capitalizedecorator'
-require_relative 'trimmerdecorator'
+require_relative '../decorator/nameable'
+require_relative '../decorator/capitalizedecorator'
+require_relative '../decorator/trimmerdecorator'
 
 class Person < Nameable
-  attr_reader :id, :name, :age
+  attr_reader :id, :name, :age, :rental
 
   def initialize(age, name = 'Unknown', parent_permission: true)
     super()
@@ -11,6 +11,7 @@ class Person < Nameable
     @name = name
     @age = age
     @parent_permission = parent_permission
+    @rentals
   end
 
   def can_use_services?
@@ -19,6 +20,11 @@ class Person < Nameable
 
   def correct_name
     @name
+  end
+
+  def add_rental(rental)
+    rental.person = self
+    @rentals << rental
   end
 
   private
