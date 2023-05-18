@@ -22,9 +22,8 @@ class Person < Nameable
     @name
   end
 
-  def add_rental(rental)
-    rental.person = self unless rental.person.include?(self)
-    @rentals << rental
+  def add_rental(book, date)
+    Rental.new(date, book, self)
   end
 
   private
