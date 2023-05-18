@@ -3,7 +3,7 @@ require_relative '../decorator/capitalizedecorator'
 require_relative '../decorator/trimmerdecorator'
 
 class Person < Nameable
-  attr_reader :id, :name, :age, :rental
+  attr_reader :id, :name, :age, :rentals
 
   def initialize(age, name = 'Unknown', parent_permission: true)
     super()
@@ -23,7 +23,7 @@ class Person < Nameable
   end
 
   def add_rental(rental)
-    rental.person = self
+    rental.person = self unless rental.person.include?(self)
     @rentals << rental
   end
 
