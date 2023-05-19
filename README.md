@@ -114,9 +114,6 @@ You can deploy this project using: **Not available**
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-- [ ] **["Decorator" design pattern.]**
-- [ ] **["set up associations]**
-- [ ] **[add basic UI]**
 - [ ] **[preserve data]**
 - [ ] **[unit tests]**
 
