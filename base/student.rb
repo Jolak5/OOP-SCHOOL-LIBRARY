@@ -1,10 +1,11 @@
 require_relative 'person'
+require_relative '../associations/classroom'
 
 class Student < Person
-  attr_reader :name, :classroom
+  attr_reader :classroom
 
-  def initialize(age, name = 'Unknown', parent_permission: true, classroom: '')
-    super(age, name, parent_permission)
+  def initialize(age, name = 'Unknown', parent_permission: true, classroom: 'Unknown')
+    super(age, name, parent_permission: true)
     @classroom = classroom
   end
 
@@ -12,8 +13,8 @@ class Student < Person
     '¯(ツ)/¯'
   end
 
-  def classroom=(classroom)
+  def add_classroom(classroom)
     classroom.student = self
-    @classroom.push(classroom) unless classroom.student.include?(self)
+    @classroom.push(self) unless classroom.student.include?(self)
   end
 end
