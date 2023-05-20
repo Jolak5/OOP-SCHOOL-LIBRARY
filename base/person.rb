@@ -3,6 +3,8 @@ require_relative '../decorator/capitalizedecorator'
 require_relative '../decorator/trimmerdecorator'
 require_relative '../associations/rental'
 
+
+
 class Person < Nameable
   attr_accessor :age, :name, :rentals
   attr_reader :id
@@ -24,7 +26,8 @@ class Person < Nameable
     @name
   end
 
-  def add_rental(date, book)
+ 
+ def add_rental(date, books)
     Rental.new(date, book, self)
   end
 
