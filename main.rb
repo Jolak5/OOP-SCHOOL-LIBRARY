@@ -6,10 +6,10 @@ class Main < Options
     super()
     @app = App.new
   end
- 
+
   puts "Welcome to School Library\n\n"
   puts "Please choose an option by entering a number!\n"
-  
+
 
   def run
     loop do
