@@ -3,8 +3,6 @@ require_relative '../decorator/capitalizedecorator'
 require_relative '../decorator/trimmerdecorator'
 require_relative '../associations/rental'
 
-
-
 class Person < Nameable
   attr_accessor :age, :name, :rentals
   attr_reader :id
