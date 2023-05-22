@@ -1,14 +1,22 @@
+class OrderReport
+  def initialize(customer:, total:)
+    @customer = customer
+    @total = total
+  end
 
-require 'pry'
-def calculate_sum(b)
-  sum = a + b
-  binding.pry
-  sum
+  def invoice
+    puts "invoice"
+    puts @customer
+    puts @total
+  end
+
+  def bill_of_lading
+    puts "BOL"
+    puts @customer
+    puts "Shiping Label..."
+  end
 end
 
-puts "Enter two numbers:"
-num1 = gets.chomp.to_i
-num2 = gets.chomp.to_i
-
-result = calculate_sum(num1, num2)
-puts "The sum is: #{result}"
+order = OrderReport.new(customer: "Google", total: 100)
+order.invoice
+order.bill_of_lading
