@@ -1,15 +1,20 @@
+require_relative './modules'
 require_relative '../associations/classroom'
 require_relative '../base/student'
 require_relative '../base/teacher'
+require_relative '../base/person'
 require_relative '../associations/book'
 require_relative '../associations/rental'
-
+require 'json'
 class App
   def initialize
     @people = []
     @books = []
     @rentals = []
   end
+
+  include LoadData
+  include SaveData
 
   def list_books
     if @books.empty?
@@ -127,3 +132,5 @@ class App
     puts "Please choose an option by entering a number!\n"
   end
 end
+
+puts @people

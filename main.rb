@@ -11,6 +11,9 @@ class Main < Options
   puts "Please choose an option by entering a number!\n"
 
   def run
+    @app.load_books_data
+    @app.load_people_data
+    @app.load_rentals_data
     loop do
       options
       input = gets.chomp
@@ -23,6 +26,7 @@ class Main < Options
       when 6 then @app.list_rentals
       when 7
         puts 'Thank you for using School Library App!'
+        @app.save_files
         return
       end
     end
