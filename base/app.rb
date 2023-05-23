@@ -5,10 +5,8 @@ require_relative '../base/person'
 require_relative '../associations/book'
 require_relative '../associations/rental'
 require 'json'
-require 'pry'
-
 class App
-  def initialize
+  def initializes
     @people = []
     @books = []
     @rentals = []
@@ -229,7 +227,6 @@ class App
     return if rentals.nil?
 
     rentals.each do |rental|
-
       person = @people.find { |p| p.id.to_i == rental['borrower_id'].to_i }
 
       @rentals << Rental.new(rental['date'], Book.new(rental['book_title'], rental['author']),
