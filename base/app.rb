@@ -229,7 +229,7 @@ class App
     return if rentals.nil?
 
     rentals.each do |rental|
-      # person = @people.find { |element| element.id.to_i == 303 }
+
       person = @people.find { |p| p.id.to_i == rental['borrower_id'].to_i }
 
       @rentals << Rental.new(rental['date'], Book.new(rental['book_title'], rental['author']),
