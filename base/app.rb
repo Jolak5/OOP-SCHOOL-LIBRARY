@@ -3,6 +3,7 @@ require_relative '../base/student'
 require_relative '../base/teacher'
 require_relative '../associations/book'
 require_relative '../associations/rental'
+require 'json'
 
 class App
   def initialize
@@ -12,6 +13,10 @@ class App
   end
 
   def list_books
+    File.open("books.json  ", "r") do |book|
+    @books = JSON.load(book.readline())
+    end
+
     if @books.empty?
       puts 'There is no book.'
       puts "Please choose an option by entering a number!\n"
@@ -58,6 +63,7 @@ class App
     @people << Student.new(age, name)
     puts "Student created successfully!\n\n"
     puts "Please choose an option by entering a number!\n"
+    
   end
 
   def create_teacher
@@ -126,4 +132,34 @@ class App
     end
     puts "Please choose an option by entering a number!\n"
   end
+  def save_files 
+    people = []
+    rentals = []
+    books = []
+    @people.each do |p|
+     people << ["#{p.class}, Name: #{p.name}, ID: #{p.id}, Age: #{p.age}"]
+    end
+
+    @books.each do |book|
+      books << ["Title: #{book.title} , Author: #{book.author}"]
+     end
+
+     @rentals.each do |rental|
+      rentals << ["Date: #{rental.date}, Book '#{rental.book.title}' by #{rental.book.author}"]
+     end
+     
+    File.open('people.json', 'w') do |file|
+      file.write(people)
+    end
+
+    File.open('rentals.json', 'w') do |file|
+      file.write(rentals)
+    end
+
+    File.open('books.json', 'w') do |file|
+      file.write(books)
+    end
+  end
 end
+
+puts @people

@@ -23,6 +23,7 @@ class Main < Options
       when 6 then @app.list_rentals
       when 7
         puts 'Thank you for using School Library App!'
+        @app.save_files
         return
       end
     end
