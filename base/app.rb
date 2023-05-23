@@ -1,9 +1,11 @@
 require_relative '../associations/classroom'
 require_relative '../base/student'
 require_relative '../base/teacher'
+require_relative '../base/person'
 require_relative '../associations/book'
 require_relative '../associations/rental'
 require 'json'
+require 'pry'
 
 class App
   def initialize
@@ -13,10 +15,6 @@ class App
   end
 
   def list_books
-    File.open("books.json  ", "r") do |book|
-    @books = JSON.load(book.readline())
-    end
-
     if @books.empty?
       puts 'There is no book.'
       puts "Please choose an option by entering a number!\n"
@@ -63,7 +61,6 @@ class App
     @people << Student.new(age, name)
     puts "Student created successfully!\n\n"
     puts "Please choose an option by entering a number!\n"
-    
   end
 
   def create_teacher
@@ -132,32 +129,99 @@ class App
     end
     puts "Please choose an option by entering a number!\n"
   end
-  def save_files 
-    people = []
-    rentals = []
-    books = []
-    @people.each do |p|
-     people << ["#{p.class}, Name: #{p.name}, ID: #{p.id}, Age: #{p.age}"]
-    end
 
-    @books.each do |book|
-      books << ["Title: #{book.title} , Author: #{book.author}"]
-     end
-
-     @rentals.each do |rental|
-      rentals << ["Date: #{rental.date}, Book '#{rental.book.title}' by #{rental.book.author}"]
-     end
-     
+  def save_files
     File.open('people.json', 'w') do |file|
-      file.write(people)
+      file.puts(
+        JSON.dump(
+          {
+            data: @people.map do |person|
+                    { id: person.id,
+                      type: person.class,
+                      name: person.name,
+                      age: person.age }
+                  end
+          }
+        )
+      )
     end
 
     File.open('rentals.json', 'w') do |file|
-      file.write(rentals)
+      file.puts(
+        JSON.dump(
+          {
+            data: @rentals.map do |rental|
+                    { date: rental.date,
+                      book_title: rental.book.title,
+                      author: rental.book.author,
+                      borrower_name: rental.person.name,
+                      borrower_age: rental.person.age }
+                  end
+          }
+        )
+      )
     end
 
     File.open('books.json', 'w') do |file|
-      file.write(books)
+      file.puts(
+        JSON.dump(
+          {
+            data: @books.map do |book|
+                    {
+                      title: book.title,
+                      author: book.author
+                    }
+                  end
+          }
+        )
+      )
+    end
+  end
+
+  def load_people_data
+    return unless File.exist?('people.json')
+
+    filedata = File.open('people.json', 'r')
+
+    people = JSON.load(filedata.readline)['data'] unless filedata.eof?
+
+    return if people.nil?
+
+    people.each do |person|
+      @people << if person['type'] == 'Student'
+                   Student.new(person['age'], person['name'])
+                 else
+                   Teacher.new(person['age'], person['name'])
+                 end
+    end
+  end
+
+  def load_books_data
+    return unless File.exist?('books.json')
+
+    filedata = File.open('books.json', 'r')
+
+    books = JSON.load(filedata.readline)['data'] unless filedata.eof?
+
+    return if books.nil?
+
+    books.each do |book|
+      @books << Book.new(book['title'], book['author'])
+    end
+  end
+
+  def load_rentals_data
+    return unless File.exist?('rentals.json')
+
+    filedata = File.open('rentals.json', 'r')
+
+    rentals = JSON.load(filedata.readline)['data'] unless filedata.eof?
+
+    return if rentals.nil?
+
+    rentals.each do |rental|
+      @rentals << Rental.new(rental['date'], Book.new(rental['book_title'], rental['author']),
+                             Person.new(rental['borrower_age'], rental['borrower_name']))
     end
   end
 end

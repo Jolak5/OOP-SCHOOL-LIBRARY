@@ -11,6 +11,9 @@ class Main < Options
   puts "Please choose an option by entering a number!\n"
 
   def run
+    @app.load_books_data
+    @app.load_people_data
+    @app.load_rentals_data
     loop do
       options
       input = gets.chomp
