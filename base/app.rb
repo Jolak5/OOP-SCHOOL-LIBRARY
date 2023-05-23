@@ -131,36 +131,41 @@ class App
   end
 
   def save_files
-    File.open('people.json', 'w') do |file|
-      file.puts(
-        JSON.dump(
-          {
-            data: @people.map do |person|
-                    { id: person.id,
-                      type: person.class,
-                      name: person.name,
-                      age: person.age }
-                  end
-          }
+    unless @people.empty?
+      File.open('people.json', 'w') do |file|
+        file.puts(
+          JSON.dump(
+            {
+              data: @people.map do |person|
+                      { id: person.id,
+                        type: person.class,
+                        name: person.name,
+                        age: person.age }
+                    end
+            }
+          )
         )
-      )
+      end
     end
 
-    File.open('rentals.json', 'w') do |file|
-      file.puts(
-        JSON.dump(
-          {
-            data: @rentals.map do |rental|
-                    { date: rental.date,
-                      book_title: rental.book.title,
-                      author: rental.book.author,
-                      borrower_name: rental.person.name,
-                      borrower_age: rental.person.age }
-                  end
-          }
+    unless @rentals.empty?
+      File.open('rentals.json', 'w') do |file|
+        file.puts(
+          JSON.dump(
+            {
+              data: @rentals.map do |rental|
+                      { date: rental.date,
+                        book_title: rental.book.title,
+                        author: rental.book.author,
+                        borrower_id: rental.person.id }
+                    end
+            }
+          )
         )
-      )
+      end
     end
+
+    return if @books.empty?
 
     File.open('books.json', 'w') do |file|
       file.puts(
@@ -183,15 +188,19 @@ class App
 
     filedata = File.open('people.json', 'r')
 
-    people = JSON.load(filedata.readline)['data'] unless filedata.eof?
+    people = JSON.parse(filedata.readline)['data'] unless filedata.eof?
 
     return if people.nil?
 
     people.each do |person|
       @people << if person['type'] == 'Student'
-                   Student.new(person['age'], person['name'])
+                   new_student = Student.new(person['age'], person['name'])
+                   new_student.id = person['id']
+                   new_student
                  else
-                   Teacher.new(person['age'], person['name'])
+                   new_teacher = Teacher.new(person['age'], person['name'])
+                   new_teacher.id = person['id']
+                   new_teacher
                  end
     end
   end
@@ -201,7 +210,7 @@ class App
 
     filedata = File.open('books.json', 'r')
 
-    books = JSON.load(filedata.readline)['data'] unless filedata.eof?
+    books = JSON.parse(filedata.readline)['data'] unless filedata.eof?
 
     return if books.nil?
 
@@ -215,13 +224,16 @@ class App
 
     filedata = File.open('rentals.json', 'r')
 
-    rentals = JSON.load(filedata.readline)['data'] unless filedata.eof?
+    rentals = JSON.parse(filedata.readline)['data'] unless filedata.eof?
 
     return if rentals.nil?
 
     rentals.each do |rental|
+      # person = @people.find { |element| element.id.to_i == 303 }
+      person = @people.find { |p| p.id.to_i == rental['borrower_id'].to_i }
+
       @rentals << Rental.new(rental['date'], Book.new(rental['book_title'], rental['author']),
-                             Person.new(rental['borrower_age'], rental['borrower_name']))
+                             person)
     end
   end
 end
