@@ -35,4 +35,9 @@ class Person < Nameable
 end
 
 # student = Person.new(2, "kayode")
-# puts student.add_rental("kayode", "Olatuni")
+# person = Person.new(22, 'maximilianus')
+# puts person.correct_name
+# capitalizedperson = CapitalizeDecorator.new(person)
+# puts capitalizedperson.correct_name
+# capitalizedtrimmedperson = TrimmerDecorator.new(capitalizedperson)
+# puts capitalizedtrimmedperson.correct_name
