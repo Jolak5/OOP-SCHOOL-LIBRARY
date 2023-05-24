@@ -8,7 +8,7 @@ describe Classroom do
   context 'When the classroom class is called' do
     it 'should add new student' do
       allow(classroom).to receive(:add_student) { student }
-      classroom.student << classroom.add_student
+      classroom.student << classroom.add_student(student)
 
       expect(classroom.student.length).to be 1
     end

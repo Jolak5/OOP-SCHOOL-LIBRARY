@@ -13,7 +13,7 @@ describe Student do
 
     it 'should assign a classroom of name "class 1" to student' do
       allow(student).to receive(:add_classroom) { classroom }
-      allow(student).to receive(:classroom) { student.add_classroom }
+      allow(student).to receive(:classroom).and_return(classroom)
 
       expect(student.classroom.label).to eql 'Class 1'
     end
