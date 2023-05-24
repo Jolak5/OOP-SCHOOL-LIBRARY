@@ -22,9 +22,7 @@ describe Person do
     end
 
     it 'the person should be of age' do
-      allow(@person).to receive(:is_of_age?) { @person.age >= 18 }
-
-      expect(@person.is_of_age?).to be true
+      expect(@person.send(:of_age?)).to be true
     end
   end
 end
